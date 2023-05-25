@@ -26,7 +26,6 @@ spec:
   interval: 10m0s
   path: ./istio/gateway
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -42,7 +41,6 @@ spec:
   interval: 10m0s
   path: ./istio/integration
   prune: true
-  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
