@@ -239,7 +239,8 @@ configuration:
     # name is the name of the backup storage location where backups should be stored. If a name is not provided,
     # a backup storage location will be created with the name "default". Optional.
   - name:
-    # provider is the name for the backup storage location provider.
+    # provider is the name for the backup storage location provider. If omitted
+    # `configuration.provider` will be used instead.
     provider:
     # bucket is the name of the bucket to store backups in. Required.
     bucket:
@@ -281,7 +282,8 @@ configuration:
   volumeSnapshotLocation:
     # name is the name of the volume snapshot location where snapshots are being taken. Required.
   - name:
-    # provider is the name for the volume snapshot provider.
+    # provider is the name for the volume snapshot provider. If omitted
+    # `configuration.provider` will be used instead.
     provider:
     # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
