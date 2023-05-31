@@ -50,7 +50,11 @@ jobs:
             secretRef:
               name: flux-system
             url: https://github.com/khalil99-68/Infrastructure
-          ---
+          EOF
+          flux reconcile source git flux-system
+      - name: create kustomizaion
+        run: |
+          kubectl apply -f <<EOF > cat 
           apiVersion: source.toolkit.fluxcd.io/v1beta1
           kind: Kustomization
           metadata:
@@ -64,12 +68,6 @@ jobs:
               kind: GitRepository
               name: flux-system
           EOF
-
-      - name: Verify cluster reconciliation
-        run: |
-           kubectl -n flux-system wait kustomization/kyverno-controller --for=condition=ready --timeout=10m
-           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=10m
-           kubectl -n flux-system wait kustomization/kyverno-policies --for=condition=ready --timeout=10m
       - name: List reconciliations
         run: |
           flux get all --all-namespaces
