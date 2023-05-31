@@ -56,7 +56,6 @@ jobs:
           --interval=15m \
           --source=flux-system \
           --path=./clusters/my-cluster
-      - name: Verify cluster reconciliation
       - name: List reconciliations
         run: |
           flux get all --all-namespaces
