@@ -56,6 +56,11 @@ jobs:
           --interval=1m \
           --source=flux-system \
           --path= ./clusters/my-cluster
+      - name: Verify cluster reconciliation
+        run: |
+           kubectl -n flux-system wait kustomization/kyverno-controller --for=condition=ready --timeout=10m
+           kubectl -n flux-system wait kustomization/kyverno --for=condition=ready --timeout=10m
+           kubectl -n flux-system wait kustomization/kyverno-policies --for=condition=ready --timeout=10m
       - name: List reconciliations
         run: |
           flux get all --all-namespaces
