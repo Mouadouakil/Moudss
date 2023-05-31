@@ -52,22 +52,11 @@ jobs:
             url: https://github.com/khalil99-68/Infrastructure
           EOF
           flux reconcile source git flux-system
-      - name: create kustomizaion
-        run: |
-          kubectl apply -f - <<EOF > cat 
-          apiVersion: source.toolkit.fluxcd.io/v1beta1
-          kind: Kustomization
-          metadata:
-            name: flux-system
-            namespace: flux-system
-          spec:
-            interval: 1m0s
-            path: ./clusters/my-cluster
-            prune: true
-            sourceRef:
-              kind: GitRepository
-              name: flux-system
-          EOF
+          flux create kustomization flux-system \
+          --interval=15m \
+          --source=flux-system \
+          --path=./clusters/my-cluster
+      - name: Verify cluster reconciliation
       - name: List reconciliations
         run: |
           flux get all --all-namespaces
