@@ -44,7 +44,7 @@ jobs:
             name: flux-system
             namespace: flux-system
           spec:
-            interval: 3m0s
+            interval: 3m
             ref:
               branch: main
             secretRef:
@@ -53,7 +53,7 @@ jobs:
           EOF
           flux reconcile source git flux-system
           flux create kustomization flux-system \
-          --interval=3m0s\
+          --interval=3m \
           --source=flux-system \
           --path=./clusters/my-cluster
       - name: List reconciliations
