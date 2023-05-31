@@ -50,6 +50,8 @@ jobs:
             secretRef:
               name: flux-system
             url: https://github.com/khalil99-68/Infrastructure
+            ignore: |
+              /clusters/my-cluster/flux-system
           EOF
           flux reconcile source git flux-system
           flux create kustomization flux-system \
