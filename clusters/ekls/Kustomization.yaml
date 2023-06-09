@@ -6,7 +6,7 @@ metadata:
   name: helm-repositories
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1m0s
   sourceRef:
     kind: GitRepository
     name: ekls-flux2-sync
@@ -71,7 +71,6 @@ spec:
   path: ./loki
   prune: true
   validation: client
-
 ---
 apiVersion: v1
 kind: ConfigMap
