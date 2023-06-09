@@ -1,5 +1,3 @@
-
----
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
@@ -41,7 +39,6 @@ spec:
   path: ./harbor
   prune: true
   validation: client
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
@@ -56,7 +53,6 @@ spec:
   path: ./vault
   prune: true
   validation: client
-
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -91,6 +87,7 @@ spec:
   interval: 10m0s
   path: ./istio/system
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: ekls-flux2-sync
