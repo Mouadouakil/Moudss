@@ -1,0 +1,180 @@
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: helm-repositories
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  path: ./source
+  prune: true
+  validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: sonar
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  path: ./sonar
+  prune: true
+  validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: harbor
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  path: ./harbor
+  prune: true
+  validation: client
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: vault
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  path: ./vault
+  prune: true
+  validation: client
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: loki
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  path: ./loki
+  prune: true
+  validation: client
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio-version
+  namespace: flux-system
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: merge
+data:
+  version: 1.13.4
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: istio-system
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./istio/system
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: istio-version
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: istio-gateway
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: istio-system
+  interval: 10m0s
+  path: ./istio/gateway
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: istio-integration
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: istio-system
+  interval: 10m0s
+  path: ./istio/integration
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+
+---  
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: kyverno
+  namespace: flux-system
+spec:
+  interval: 10m
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  serviceAccountName: kustomize-controller
+  path: ./kyverno
+  prune: true
+  wait: true
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: kyverno-policies
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: kyverno
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  serviceAccountName: kustomize-controller
+  path: ./kyverno-policies
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: kyverno-reporter
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: kyverno
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: ekls-flux2-sync
+  serviceAccountName: kustomize-controller
+  path: ./kyverno-reporter
+  prune: true
