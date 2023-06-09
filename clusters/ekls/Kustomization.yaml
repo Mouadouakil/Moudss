@@ -110,6 +110,7 @@ spec:
   interval: 10m0s
   path: ./istio/gateway
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: ekls-flux2-sync
@@ -125,10 +126,10 @@ spec:
   interval: 10m0s
   path: ./istio/integration
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: ekls-flux2-sync
-
 ---  
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
