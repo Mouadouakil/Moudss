@@ -147,22 +147,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: kyverno-policies
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: kyverno
-  interval: 5m
-  sourceRef:
-    kind: GitRepository
-    name: ekls-flux2-sync
-  serviceAccountName: kustomize-controller
-  path: ./kyverno-policies
-  prune: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
   name: kyverno-reporter
   namespace: flux-system
 spec:
